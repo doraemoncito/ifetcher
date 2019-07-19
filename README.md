@@ -16,6 +16,6 @@ To download a TV programme click on a programme link in the web page displayed i
 
 ![iFetcher Download Dialog](images/ifetcher_download_dialog.jpg "iFetcher Download Dialog")
 
-For an overview of the video request process used in this program please visit the [iPhone H.264 video page](iPhone H.264 video page) at the [Beeb hack website](Beeb hack website).
+For an overview of the video request process used in this program please visit the [iPhone H.264 video page](http://beebhack.wikia.com/wiki/IPhone_H.264_version) at the [Beeb hack website](http://beebhack.wikia.com/wiki/Beebhack).
 
 Cross-platform source code and 64 bit Microsoft Windows 7 binary are available from the release page. The source code has been released under the version 3 of the GNU general public license.
