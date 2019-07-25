@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+moc_*.cpp
+moc_*.h
+ui_*.h
+Makefile
+.qmake.stash
+*.pro.user

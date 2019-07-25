@@ -19,7 +19,10 @@
 
 #include "programmeinfo.h"
 
-ProgrammeInfo::ProgrammeInfo(const QString &programmeId = 0) {
+// https://github.com/MasterSoft24/CloudCross/issues/58
+// https://stackoverflow.com/questions/18313509/default-argument-gcc-vs-clang
+//ProgrammeInfo::ProgrammeInfo(const QString &programmeId = nullptr) {
+ProgrammeInfo::ProgrammeInfo(const QString &programmeId) {
     setProgrammeId(programmeId);
 }
 

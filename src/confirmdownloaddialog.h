@@ -20,7 +20,7 @@
 #ifndef CONFIRMDOWNLOADDIALOG_H
 #define CONFIRMDOWNLOADDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 class Download;
 class Metadata;
@@ -48,7 +48,7 @@ public slots:
 private:
     Ui::ConfirmDownloadDialog *ui;
     QString m_programmeId;
-    Metadata *m_pMetadata;    
+    Metadata *m_pMetadata;
     Download *m_pDownload;
 };
 

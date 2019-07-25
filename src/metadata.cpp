@@ -20,6 +20,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtNetwork>
+#include <QtWidgets/QMessageBox>
 
 #include "metadata.h"
 #include "httpget.h"
@@ -73,7 +74,7 @@ void Metadata::finished(HttpGet *getter) {
             if (token == QXmlStreamReader::StartDocument) {
                 continue;
             }
-		
+
             /* If token is StartElement, we'll see if we can read it.*/
             if (token == QXmlStreamReader::StartElement) {
                 /* If it's named persons, we'll go to the next.*/
@@ -97,19 +98,19 @@ void Metadata::finished(HttpGet *getter) {
 
         /* Error handling. */
         if (xml.hasError()) {
-            QMessageBox::critical(0, "iPlayer metadata", xml.errorString(), QMessageBox::Ok);
+            QMessageBox::critical(nullptr, "iPlayer metadata", xml.errorString(), QMessageBox::Ok);
         }
 
         QMap<QString, QString> options;
         options.insert("User-Agent", HttpGet::UA_IPHONE);
         m_pPlaylist->deleteLater();
-        m_pPlaylist = 0;
+        m_pPlaylist = nullptr;
         m_pThumbnail = HttpGet::create(*this, *m_pManager, THUMBNAIL_URL.arg(m_pProgrammeInfo->programmeId()), options);
 
     } else if (getter == m_pThumbnail) {
         m_pProgrammeInfo->setThumbnail(m_pThumbnail->image());
         m_pThumbnail->deleteLater();
-        m_pThumbnail = 0;
+        m_pThumbnail = nullptr;
         emit finished();
     }
 }

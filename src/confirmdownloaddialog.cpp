@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with iFetcher.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010 Jose Hernandez.
+ * Copyright (C) 2010-2019 Jose Hernandez.
  */
 
+#include <QPushButton>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "confirmdownloaddialog.h"
 #include "ui_confirmdownloaddialog.h"
 #include "metadata.h"
 #include "programmeinfo.h"
-#include "qtwin.h"
 #include "download.h"
 
 ConfirmDownloadDialog::ConfirmDownloadDialog(QWidget *parent, const QString &programmeId) :
     QDialog(parent),
     ui(new Ui::ConfirmDownloadDialog),
     m_programmeId(programmeId),
-    m_pMetadata(0),
-    m_pDownload(0)
+    m_pMetadata(nullptr),
+    m_pDownload(nullptr)
 {
     ui->setupUi(this);
 
@@ -80,7 +82,7 @@ void ConfirmDownloadDialog::accept() {
     // friendly characters removed.
     QString fileName = getProgrammeInfo()->title();
     fileName = fileName.replace(QRegExp("[^\\w]"), "_").replace(QRegExp("_{2,}"), "_").toLower();
-    fileName = QFileDialog::getSaveFileName(this, tr("Save File"), fileName, tr("Video (*.mp4)"), 0, QFileDialog::DontConfirmOverwrite);
+    fileName = QFileDialog::getSaveFileName(this, tr("Save File"), fileName, tr("Video (*.mp4)"), nullptr, QFileDialog::DontConfirmOverwrite);
 
     // When the user cancels the operation the filename is empty
     if (!fileName.isEmpty()) {

@@ -18,6 +18,9 @@
  */
 
 #include <QFile>
+#include <QMessageBox>
+#include <QWebEnginePage>
+#include <QtDebug>
 #include "httpget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -31,15 +34,24 @@ const QString MainWindow::basePathIPlayer("/mobile/iplayer");
 const QString MainWindow::basePathEpisode("/mobile/iplayer/episode/");
 
 
-class IPhoneWebPage : public QWebPage {
+class IPhoneWebPage : public QWebEnginePage {
 
 public:
-    IPhoneWebPage(QObject *parent) : QWebPage(parent) {
+    IPhoneWebPage(QObject *parent) : QWebEnginePage(parent) {
     }
 
 protected:
     virtual QString userAgentForUrl(const QUrl &) const {
         return HttpGet::UA_IPHONE;
+    }
+
+    virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) {
+
+        qInfo() << url.toString();
+
+        // TODO: emit a signal for clicked links based on the navigation type.
+        // Episode links start with "https://www.bbc.co.uk/iplayer/episode/"
+        return !url.toString().startsWith("https://www.bbc.co.uk/iplayer/episode/");
     }
 };
 
@@ -49,17 +61,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // Create a web page that pretends to be an iPhone
     IPhoneWebPage *iPhonePage = new IPhoneWebPage(ui->webView);
-    iPhonePage->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
+    // FIXME: how is this functionality provided in Qt 5.13
+    // iPhonePage->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
     // Add the page to the web view
     ui->webView->setPage(iPhonePage);
     ui->webView->load(QUrl(baseUrl + basePathIPlayer));
     ui->webView->resize(320, 480);
 
-    ui->mainToolBar->addAction(ui->webView->pageAction(QWebPage::Back));
-    ui->mainToolBar->addAction(ui->webView->pageAction(QWebPage::Forward));
-    ui->mainToolBar->addAction(ui->webView->pageAction(QWebPage::Reload));
-    ui->mainToolBar->addAction(ui->webView->pageAction(QWebPage::Stop));
+    ui->mainToolBar->addAction(ui->webView->pageAction(QWebEnginePage::Back));
+    ui->mainToolBar->addAction(ui->webView->pageAction(QWebEnginePage::Forward));
+    ui->mainToolBar->addAction(ui->webView->pageAction(QWebEnginePage::Reload));
+    ui->mainToolBar->addAction(ui->webView->pageAction(QWebEnginePage::Stop));
 
     m_pLocation = new QLabel();
     m_pLocation->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
@@ -71,18 +85,18 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::on_actionAbout_triggered(bool) {
-    QString aboutStr("<b>About iFetcher version 1.0.</b><p><p>" \
+    QString aboutStr("<b>About <a href=\"https://github.com/doraemoncito/ifetcher\">iFetcher</a> version 1.1.</b><p><p>" \
         "iFetcher is free software: you can redistribute it and/or modify" \
         "it under the terms of the GNU General Public License as published by" \
-        "the Free Software Foundation, either version 3 of the License, or" \
+        "the Free Software Foundation, either <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">version 3</a> of the License, or" \
         "(at your option) any later version.<p><p>" \
         "iFetcher is distributed in the hope that it will be useful," \
         "but WITHOUT ANY WARRANTY; without even the implied warranty of" \
         "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the" \
         "GNU General Public License for more details<p><p>" \
         "You should have received a copy of the GNU General Public License" \
-        "along with iFetcher.  If not, see http://www.gnu.org/licenses/.<p><p>" \
-        "<b>Copyright (C) 2010 Jose Hernandez.</b>");
+        "along with iFetcher.  If not, see <a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>.<p><p>" \
+        "<b>Copyright (c) 2010-2019 Jose Hernandez.</b>");
 
     QMessageBox::about(this, "About iFetcher", aboutStr);
 //    QMessageBox::about(this, "About iFetcher", "<b>iFetcher version 1.0<p>Copyright &copy; 2010 Jose Hernandez</b>");

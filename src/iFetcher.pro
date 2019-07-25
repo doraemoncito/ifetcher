@@ -4,15 +4,14 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit network xml
+QT += core widgets gui network xml webengine webenginewidgets
 
 TARGET = iFetcher
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    qtwin.cpp \
+SOURCES += main.cpp \
+    mainwindow.cpp \
     httpget.cpp \
     metadata.cpp \
     download.cpp \
@@ -20,12 +19,11 @@ SOURCES += main.cpp\
     programmeinfo.cpp
 
 HEADERS  += mainwindow.h \
-    qtwin.h \
     httpget.h \
     metadata.h \
     download.h \
     confirmdownloaddialog.h \
     programmeinfo.h
 
-FORMS    += mainwindow.ui \
+FORMS += mainwindow.ui \
     confirmdownloaddialog.ui

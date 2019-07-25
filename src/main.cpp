@@ -17,8 +17,7 @@
  * Copyright (C) 2010 Jose Hernandez.
  */
 
-#include <QtGui/QApplication>
-#include "qtwin.h"
+#include <QtWidgets/QApplication>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
@@ -26,12 +25,5 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-
-    // Give the main window its transparent look
-    if (QtWin::isCompositionEnabled()) {
-        QtWin::extendFrameIntoClientArea(&w);
-        w.setContentsMargins(0, -1, 0, 0);
-    }
-
     return a.exec();
 }
